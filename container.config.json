@@ -8,8 +8,8 @@
   "policyThreshold": 60,
   "envParams": {},
   "customLogs": "stdout",
-  "dataBaseName": "ztian_music",
+  "dataBaseName": "ztian-music",
   "executeSQLs": [
-    "CREATE DATABASE IF NOT EXISTS ztian_music;"
+    "CREATE DATABASE IF NOT EXISTS ztian-music;"
   ]
 }
