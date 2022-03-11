@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
  * @author: zhangtian
  * @since: 2022-03-08 13:11
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/hello")
-@CrossOrigin
 public class DefaultController {
     @GetMapping
     public String sayHello(){
