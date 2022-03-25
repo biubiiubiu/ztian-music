@@ -13,28 +13,28 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class UserRepositoryTest {
 
-    @Autowired
-    UserRepository repository;
-
-    @Test
-    void findByUsername(){
-        User user = new User();
-        user.setUsername("zt");
-        user.setNickname("zt001");
-        user.setEnabled(true);
-        user.setLocked(false);
-        user.setGender(Gender.MALE);
-        user.setPassword("123456");
-        user.setLastLoginIp("localhost");
-        user.setLastLoginTime(new Date());
-
-        // 对象存入数据库
-        User saveUser = repository.save(user);
-        // jpa特性，在repository中自定义查询方法，简单调用
-        User zt = repository.getByUsername("zt");
-
-        System.out.println(zt);
-    }
+//    @Autowired
+//    UserRepository repository;
+//
+//    @Test
+//    void findByUsername(){
+//        User user = new User();
+//        user.setUsername("zt");
+//        user.setNickname("zt001");
+//        user.setEnabled(true);
+//        user.setLocked(false);
+//        user.setGender(Gender.MALE);
+//        user.setPassword("123456");
+//        user.setLastLoginIp("localhost");
+//        user.setLastLoginTime(new Date());
+//
+//        // 对象存入数据库
+//        User saveUser = repository.save(user);
+//        // jpa特性，在repository中自定义查询方法，简单调用
+//        User zt = repository.getByUsername("zt");
+//
+//        System.out.println(zt);
+//    }
 
 
 }
