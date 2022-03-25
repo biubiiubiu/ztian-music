@@ -1,7 +1,8 @@
 package com.example.ztianmusic.service;
 
+import com.example.ztianmusic.dto.UserCreateDto;
 import com.example.ztianmusic.dto.UserDto;
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ import java.util.List;
  * @author: zhangtian
  * @since: 2022-03-23 22:45
  */
-public interface UserService {
+public interface UserService extends UserDetailsService {
     List<UserDto> list();
+
+    UserDto create(UserCreateDto createDto);
 }
