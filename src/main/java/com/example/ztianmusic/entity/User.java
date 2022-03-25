@@ -2,8 +2,11 @@ package com.example.ztianmusic.entity;
 
 import com.example.ztianmusic.enums.Gender;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -15,14 +18,13 @@ import java.util.List;
  */
 @Entity
 @Data
-public class User extends BaseEntity {
+public class User extends BaseEntity implements UserDetails {
     @Column(unique = true)
     private String username;
 
     private String nickname;
 
-    // todo 这里考虑要不要用FetchType.LAZY
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
@@ -39,4 +41,29 @@ public class User extends BaseEntity {
     private String lastLoginIp;
 
     private Date lastLoginTime;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !getLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return getEnabled();
+    }
 }

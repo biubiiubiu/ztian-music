@@ -1,5 +1,6 @@
 package com.example.ztianmusic.mapper;
 
+import com.example.ztianmusic.dto.UserCreateDto;
 import com.example.ztianmusic.dto.UserDto;
 import com.example.ztianmusic.entity.User;
 import com.example.ztianmusic.vo.UserVo;
@@ -18,6 +19,8 @@ public interface UserMapper {
     UserDto toDto(User user);
 
     UserVo toVo(UserDto userDto);
+
+    User createEntity(UserCreateDto userCreateDto);
 
 //    User createEntity(UserCreateRequest userCreateRequest);
 //

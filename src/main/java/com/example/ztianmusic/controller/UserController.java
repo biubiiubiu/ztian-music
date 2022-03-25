@@ -1,12 +1,11 @@
 package com.example.ztianmusic.controller;
 
+import com.example.ztianmusic.dto.UserCreateDto;
 import com.example.ztianmusic.mapper.UserMapper;
 import com.example.ztianmusic.service.UserService;
 import com.example.ztianmusic.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +25,11 @@ public class UserController {
     @GetMapping("/")
     List<UserVo> list() {
         return userService.list().stream().map(userMapper::toVo).collect(Collectors.toList());
+    }
+
+    @PostMapping("/")
+    UserVo create(@RequestBody UserCreateDto createDto){
+        return userMapper.toVo(userService.create(createDto));
     }
 
     // 调用时会注入，比直接在成员上加注解要优
