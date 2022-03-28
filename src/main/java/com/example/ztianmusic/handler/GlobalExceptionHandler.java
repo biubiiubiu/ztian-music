@@ -23,6 +23,7 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = BizException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse bizExceptionHandler(BizException e) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setCode(e.getCode());
@@ -37,6 +38,7 @@ public class GlobalExceptionHandler {
      * @return: 处理结果
      */
     @ExceptionHandler(value = Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse exceptionHandler(Exception exception) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setCode(ExceptionType.INNER_ERROR.getCode());
