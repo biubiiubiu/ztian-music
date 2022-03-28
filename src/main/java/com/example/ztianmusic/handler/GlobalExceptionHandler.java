@@ -3,6 +3,7 @@ package com.example.ztianmusic.handler;
 import com.example.ztianmusic.exception.BizException;
 import com.example.ztianmusic.exception.ErrorResponse;
 import com.example.ztianmusic.exception.ExceptionType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,6 +21,7 @@ import java.util.List;
  * @since: 2022-03-25 10:16
  */
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = BizException.class)

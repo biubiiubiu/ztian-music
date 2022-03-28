@@ -2,6 +2,8 @@ package com.example.ztianmusic.service;
 
 import com.example.ztianmusic.dto.FileUploadDto;
 
+import java.io.IOException;
+
 /**
  * description:
  *
@@ -9,5 +11,5 @@ import com.example.ztianmusic.dto.FileUploadDto;
  * @since: 2022-03-28 16:37
  */
 public interface StorageService {
-    FileUploadDto initFileUpload();
+    FileUploadDto initFileUpload() throws IOException;
 }
