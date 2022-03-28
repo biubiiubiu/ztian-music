@@ -6,6 +6,7 @@ import com.example.ztianmusic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,6 +21,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
  */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // 密钥
     public static final String SECRET = "ZtianMusic";
@@ -48,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()   // 其它请求必须鉴权后才能请求
                 .and()
 //                .addFilter(new JwtAuthenticationFilter(authenticationManager()))    // 先用户名密码鉴权
-                .addFilter(new JwtAuthorizationFilter(authenticationManager()))     // 再token鉴权
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userService))     // 再token鉴权
                 .exceptionHandling()
                 .authenticationEntryPoint(restAuthenticationEntryPoint)     // 403 404等报错信息
                 .and()

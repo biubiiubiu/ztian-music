@@ -56,7 +56,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("Ztian音乐")
                 .description("Ztian音乐接口文档")
-                .contact(new Contact("Ztian", "https://programmer-yili.github.io/yili-music-doc/", "3141616128@qq.com"))
+                .contact(new Contact("原作者：程序猿依力", "https://programmer-yili.github.io/yili-music-doc/", "3141616128@qq.com"))
                 .version("1.0.0")
                 .build();
     }

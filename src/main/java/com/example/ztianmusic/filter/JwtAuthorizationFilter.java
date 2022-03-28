@@ -3,6 +3,8 @@ package com.example.ztianmusic.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.ztianmusic.config.SecurityConfig;
+import com.example.ztianmusic.entity.User;
+import com.example.ztianmusic.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,9 +25,13 @@ import java.util.ArrayList;
  */
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager,
+                                  UserService userService) {
         super(authenticationManager);
+        this.userService = userService;
     }
+
+    UserService userService;
 
     /**
      * 从header中鉴别token，如果有token就鉴权，鉴权成功就写入上下文
@@ -59,7 +65,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                     .verify(header.replace(SecurityConfig.TOKEN_PREFIX, ""))
                     .getSubject();
             if (username != null) {
-                return new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
+                User user = userService.loadUserByUsername(username);
+                return new UsernamePasswordAuthenticationToken(username, null, user.getAuthorities());
             }
         }
         return null;

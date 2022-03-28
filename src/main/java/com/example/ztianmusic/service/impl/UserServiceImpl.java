@@ -41,11 +41,6 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public List<UserDto> list() {
-        return userRepository.findAll().stream().map(userMapper::toDto).collect(Collectors.toList());
-    }
-
-    @Override
     public UserDto create(UserCreateRequest userCreateRequest) {
         checkUserName(userCreateRequest.getUsername());
         User user = userMapper.createEntity(userCreateRequest);
