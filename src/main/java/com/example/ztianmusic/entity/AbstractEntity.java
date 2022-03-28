@@ -22,7 +22,7 @@ public abstract class AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "ksuid")
-    @GenericGenerator(name="ksuid", strategy = "com.bilitech.yilimusic.utils.KsuidIdentifierGenerator")
+    @GenericGenerator(name="ksuid", strategy = "com.example.ztianmusic.utils.KsuidIdentifierGenerator")
     private String id;
 
     @CreationTimestamp

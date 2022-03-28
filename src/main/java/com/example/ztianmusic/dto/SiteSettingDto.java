@@ -1,4 +1,4 @@
-package com.example.ztianmusic.vo;
+package com.example.ztianmusic.dto;
 
 import com.example.ztianmusic.enums.Storage;
 import lombok.Data;
@@ -7,10 +7,10 @@ import lombok.Data;
  * description:
  *
  * @author: zhangtian
- * @since: 2022-03-28 16:56
+ * @since: 2022-03-28 16:58
  */
 @Data
-public class SiteSettingVo {
+public class SiteSettingDto {
     private String bucket;
 
     private String region;

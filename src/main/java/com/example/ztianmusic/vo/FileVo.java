@@ -18,7 +18,7 @@ public class FileVo extends BaseVo {
 
     private String ext;
 
-    private Integer size;
+    private Long size;
 
     private FileType type;
 
