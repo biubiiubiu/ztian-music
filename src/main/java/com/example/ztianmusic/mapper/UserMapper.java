@@ -1,10 +1,12 @@
 package com.example.ztianmusic.mapper;
 
-import com.example.ztianmusic.dto.UserCreateDto;
+import com.example.ztianmusic.dto.UserCreateRequest;
 import com.example.ztianmusic.dto.UserDto;
+import com.example.ztianmusic.dto.UserUpdateRequest;
 import com.example.ztianmusic.entity.User;
 import com.example.ztianmusic.vo.UserVo;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,9 +22,8 @@ public interface UserMapper {
 
     UserVo toVo(UserDto userDto);
 
-    User createEntity(UserCreateDto userCreateDto);
+    User createEntity(UserCreateRequest userCreateRequest);
 
-//    User createEntity(UserCreateRequest userCreateRequest);
-//
-//    User updateEntity(@MappingTarget User user, UserUpdateRequest userUpdateRequest);
+    User updateEntity(@MappingTarget User user, UserUpdateRequest userUpdateRequest);
+
 }

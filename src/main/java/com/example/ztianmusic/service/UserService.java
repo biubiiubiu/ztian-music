@@ -1,7 +1,10 @@
 package com.example.ztianmusic.service;
 
-import com.example.ztianmusic.dto.UserCreateDto;
+import com.example.ztianmusic.dto.UserCreateRequest;
 import com.example.ztianmusic.dto.UserDto;
+import com.example.ztianmusic.dto.UserUpdateRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -15,5 +18,14 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     List<UserDto> list();
 
-    UserDto create(UserCreateDto createDto);
+    UserDto create(UserCreateRequest createDto);
+
+
+    UserDto get(String id);
+
+    UserDto update(String id, UserUpdateRequest userUpdateRequest);
+
+    void delete(String id);
+
+    Page<UserDto> search(Pageable pageable);
 }

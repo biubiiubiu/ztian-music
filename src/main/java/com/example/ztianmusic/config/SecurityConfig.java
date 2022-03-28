@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()  // 开启跨域请求、关闭csrf验证
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()  // 允许所有人请求
+//                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()  // 允许所有人请求
                 .anyRequest().authenticated()   // 其它请求必须鉴权后才能请求
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))    // 先用户名密码鉴权

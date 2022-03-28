@@ -4,6 +4,7 @@ import com.example.ztianmusic.enums.Gender;
 import com.example.ztianmusic.vo.RoleVo;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,13 +21,15 @@ public class UserDto {
 
     private String nickname;
 
+    private List<RoleDto> roles;
+
     private Gender gender;
 
     private Boolean locked;
 
     private Boolean enabled;
 
-    private String openId;
+    private String lastLoginIp;
 
-    private List<RoleVo> roles;
+    private Date lastLoginTime;
 }

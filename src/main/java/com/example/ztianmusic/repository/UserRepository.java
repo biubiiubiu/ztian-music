@@ -19,11 +19,9 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findByUsername(String username);
 
-//    @Override
-//    User getById(String id);
-//
-//    @Override
-//    Page<User> findAll(Pageable pageable);
-//
-//    User getByOpenId(String openId);
+    @Override
+    User getById(String id);
+
+    @Override
+    Page<User> findAll(Pageable pageable);
 }
