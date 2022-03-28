@@ -5,6 +5,8 @@ import com.example.ztianmusic.dto.UserUpdateRequest;
 import com.example.ztianmusic.mapper.UserMapper;
 import com.example.ztianmusic.service.UserService;
 import com.example.ztianmusic.vo.UserVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,16 +23,18 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/users")
+@Api(tags = "用户")
 public class UserController {
     UserService userService;
     UserMapper userMapper;
 
     @GetMapping("/")
+    @ApiOperation("用户检索")
     Page<UserVo> search(@PageableDefault(sort = {"createdTime"}, direction = Sort.Direction.ASC) Pageable pageable) {
         return userService.search(pageable).map(userMapper::toVo);
     }
 
-    @PostMapping("/")
+    @PostMapping()
     UserVo create(@Validated @RequestBody UserCreateRequest userCreateRequest) {
         return userMapper.toVo(userService.create(userCreateRequest));
     }
@@ -49,6 +53,11 @@ public class UserController {
     @DeleteMapping("/{id}")
     void delete(@PathVariable String id) {
         userService.delete(id);
+    }
+
+    @GetMapping("/me")
+    UserVo me() {
+        return userMapper.toVo(userService.getCurrentUser());
     }
 
     // 调用时会注入，比直接在成员上加注解要优

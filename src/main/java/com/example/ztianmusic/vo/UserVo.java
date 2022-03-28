@@ -13,6 +13,8 @@ import java.util.List;
  */
 @Data
 public class UserVo {
+    private String id;
+
     private String username;
 
     private String nickname;
@@ -22,8 +24,6 @@ public class UserVo {
     private Boolean locked;
 
     private Boolean enabled;
-
-    private String openId;
 
     private List<RoleVo> roles;
 }

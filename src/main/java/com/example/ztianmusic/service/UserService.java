@@ -1,5 +1,6 @@
 package com.example.ztianmusic.service;
 
+import com.example.ztianmusic.dto.TokenCreateRequest;
 import com.example.ztianmusic.dto.UserCreateRequest;
 import com.example.ztianmusic.dto.UserDto;
 import com.example.ztianmusic.dto.UserUpdateRequest;
@@ -28,4 +29,8 @@ public interface UserService extends UserDetailsService {
     void delete(String id);
 
     Page<UserDto> search(Pageable pageable);
+
+    String createToken(TokenCreateRequest tokenCreateRequest);
+
+    UserDto getCurrentUser();
 }

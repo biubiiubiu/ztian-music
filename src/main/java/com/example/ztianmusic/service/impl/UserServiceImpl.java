@@ -1,5 +1,9 @@
 package com.example.ztianmusic.service.impl;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.example.ztianmusic.config.SecurityConfig;
+import com.example.ztianmusic.dto.TokenCreateRequest;
 import com.example.ztianmusic.dto.UserCreateRequest;
 import com.example.ztianmusic.dto.UserDto;
 import com.example.ztianmusic.dto.UserUpdateRequest;
@@ -12,11 +16,14 @@ import com.example.ztianmusic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -82,20 +89,47 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll(pageable).map(userMapper::toDto);
     }
 
-    private void checkUserName(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isPresent()) {
-            throw new BizException(ExceptionType.USER_NAME_DUPLICATE);
-        }
-    }
-
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         if (!user.isPresent()) {
             throw new BizException(ExceptionType.USER_NOT_FOUND);
         }
         return user.get();
+    }
+
+    @Override
+    public String createToken(TokenCreateRequest tokenCreateRequest) {
+        User user = loadUserByUsername(tokenCreateRequest.getUsername());
+        if (!passwordEncoder.matches(tokenCreateRequest.getPassword(), user.getPassword())) {
+            throw new BizException(ExceptionType.USER_PASSWORD_NOT_MATCH);
+        }
+        if (!user.isEnabled()) {
+            throw new BizException(ExceptionType.USER_NOT_ENABLED);
+        }
+
+        if (!user.isAccountNonLocked()) {
+            throw new BizException(ExceptionType.USER_LOCKED);
+        }
+
+        return JWT.create()
+                .withSubject(user.getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConfig.EXPIRATION_TIME))
+                .sign(Algorithm.HMAC512(SecurityConfig.SECRET.getBytes()));
+    }
+
+    @Override
+    public UserDto getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = loadUserByUsername(authentication.getName());
+        return userMapper.toDto(currentUser);
+    }
+
+    private void checkUserName(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            throw new BizException(ExceptionType.USER_NAME_DUPLICATE);
+        }
     }
 
     @Autowired
