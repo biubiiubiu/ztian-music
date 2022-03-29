@@ -27,7 +27,8 @@ class FileServiceTest {
         FileUploadRequest fileUploadRequest = new FileUploadRequest();
         fileUploadRequest.setName("测试文件名");
         fileUploadRequest.setExt("mp3");
-        fileUploadRequest.setKey("835741aba850778a5b06bfd57f55c98c");
+        // certutil -hashfile  F:\Chrome\DownloadFiles\ztianMusic.png MD5
+        fileUploadRequest.setKey("8cdf28e57db9b4415b3e02de46221711");
         fileUploadRequest.setSize(30000L);
         FileUploadDto fileUploadDto = fileService.initUpload(fileUploadRequest);
         Assertions.assertNotNull(fileUploadDto.getSecretKey());
@@ -43,7 +44,7 @@ class FileServiceTest {
         FileUploadRequest fileUploadRequest = new FileUploadRequest();
         fileUploadRequest.setName("测试文件名");
         fileUploadRequest.setExt("mp3");
-        fileUploadRequest.setKey("835741aba850778a5b06bfd57f55c98c");
+        fileUploadRequest.setKey("8cdf28e57db9b4415b3e02de46221711");
         fileUploadRequest.setSize(6082813636L);
         FileUploadDto fileUploadDto = fileService.initUpload(fileUploadRequest);
         Assertions.assertNotNull(fileUploadDto.getSecretKey());
@@ -58,7 +59,7 @@ class FileServiceTest {
         FileUploadRequest fileUploadRequest = new FileUploadRequest();
         fileUploadRequest.setName("测试文件名");
         fileUploadRequest.setExt("mp3");
-        fileUploadRequest.setKey("835741aba850778a5b06bfd57f55c98c");
+        fileUploadRequest.setKey("8cdf28e57db9b4415b3e02de46221711");
         fileUploadRequest.setSize(30000L);
         FileUploadDto fileUploadDto = fileService.initUpload(fileUploadRequest);
 

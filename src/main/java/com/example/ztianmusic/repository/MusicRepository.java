@@ -12,6 +12,7 @@ import java.util.Optional;
  * @since: 2022-03-28 16:17
  */
 public interface MusicRepository extends JpaRepository<Music, String> {
+    @Override
     Optional<Music> findById(String id);
 }
 
