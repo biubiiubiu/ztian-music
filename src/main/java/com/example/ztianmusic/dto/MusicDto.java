@@ -21,6 +21,8 @@ public class MusicDto {
 
     private String description;
 
+    private FileDto file;
+
     private Date createdTime;
 
     private Date updatedTime;
