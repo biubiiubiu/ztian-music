@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String HEADER_STRING = "Authorization";
     // 鉴权注册入口
     public static final String CREATE_TOKEN_URL = "/tokens";
+    public static final String SITE_SETTING_URL = "/settings/site";
 
     UserService userService;
 
@@ -50,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()  // 开启跨域请求、关闭csrf验证
                 .authorizeRequests()
                 .antMatchers(CREATE_TOKEN_URL).permitAll()  // 允许请求约束
+                .antMatchers(SITE_SETTING_URL).permitAll()
                 .anyRequest().authenticated()   // 其它请求必须鉴权后才能请求
                 .and()
 //                .addFilter(new JwtAuthenticationFilter(authenticationManager()))    // 先用户名密码鉴权

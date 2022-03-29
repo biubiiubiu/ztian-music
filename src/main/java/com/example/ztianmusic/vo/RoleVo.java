@@ -9,7 +9,9 @@ import lombok.Data;
  * @since: 2022-03-23 22:30
  */
 @Data
-public class RoleVo {
+public class RoleVo extends BaseVo {
+    private String id;
+
     private String name;
 
     private String title;

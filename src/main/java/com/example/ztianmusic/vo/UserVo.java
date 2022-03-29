@@ -12,8 +12,7 @@ import java.util.List;
  * @since: 2022-03-23 22:28
  */
 @Data
-public class UserVo {
-    private String id;
+public class UserVo extends BaseVo {
 
     private String username;
 
@@ -27,3 +26,4 @@ public class UserVo {
 
     private List<RoleVo> roles;
 }
+
