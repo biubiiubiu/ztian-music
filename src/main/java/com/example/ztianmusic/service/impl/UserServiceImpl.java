@@ -12,6 +12,7 @@ import com.example.ztianmusic.exception.BizException;
 import com.example.ztianmusic.exception.ExceptionType;
 import com.example.ztianmusic.mapper.UserMapper;
 import com.example.ztianmusic.repository.UserRepository;
+import com.example.ztianmusic.service.BaseService;
 import com.example.ztianmusic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,62 +36,54 @@ import java.util.stream.Collectors;
  * @since: 2022-03-23 22:45
  */
 @Service
-public class UserServiceImpl implements UserService {
-    UserRepository userRepository;
-    UserMapper userMapper;
+public class UserServiceImpl extends BaseService implements UserService {
+
+    UserRepository repository;
+
+    UserMapper mapper;
+
     PasswordEncoder passwordEncoder;
+
 
     @Override
     public UserDto create(UserCreateRequest userCreateRequest) {
         checkUserName(userCreateRequest.getUsername());
-        User user = userMapper.createEntity(userCreateRequest);
+        User user = mapper.createEntity(userCreateRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userMapper.toDto(userRepository.save(user));
+        return mapper.toDto(repository.save(user));
     }
 
     @Override
     public UserDto get(String id) {
-        // Todo: 重构
-        Optional<User> user = userRepository.findById(id);
-        if (!user.isPresent()) {
-            throw new BizException(ExceptionType.USER_NOT_FOUND);
-        }
-        return userMapper.toDto(user.get());
+        return mapper.toDto(getById(id));
     }
 
     @Override
     public UserDto update(String id, UserUpdateRequest userUpdateRequest) {
-        // Todo: 重构
-        Optional<User> user = userRepository.findById(id);
-        if (!user.isPresent()) {
-            throw new BizException(ExceptionType.USER_NOT_FOUND);
-        }
-        return userMapper.toDto(userRepository.save(userMapper.updateEntity(user.get(), userUpdateRequest)));
+        return mapper.toDto(repository.save(mapper.updateEntity(getById(id), userUpdateRequest)));
     }
 
-    @Override
-    public void delete(String id) {
-
-        // Todo: 重构
-        Optional<User> user = userRepository.findById(id);
-        if (!user.isPresent()) {
-            throw new BizException(ExceptionType.USER_NOT_FOUND);
-        }
-        userRepository.delete(user.get());
-    }
-
-    @Override
-    public Page<UserDto> search(Pageable pageable) {
-        return userRepository.findAll(pageable).map(userMapper::toDto);
-    }
-
-    @Override
-    public User loadUserByUsername(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
+    private User getById(String id) {
+        Optional<User> user = repository.findById(id);
         if (!user.isPresent()) {
             throw new BizException(ExceptionType.USER_NOT_FOUND);
         }
         return user.get();
+    }
+
+    @Override
+    public void delete(String id) {
+        repository.delete(getById(id));
+    }
+
+    @Override
+    public Page<UserDto> search(Pageable pageable) {
+        return repository.findAll(pageable).map(mapper::toDto);
+    }
+
+    @Override
+    public User loadUserByUsername(String username) {
+        return super.loadUserByUsername(username);
     }
 
     @Override
@@ -115,31 +108,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = loadUserByUsername(authentication.getName());
-        return userMapper.toDto(currentUser);
+        return mapper.toDto(super.getCurrentUserEntity());
     }
 
+
     private void checkUserName(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<User> user = repository.findByUsername(username);
         if (user.isPresent()) {
             throw new BizException(ExceptionType.USER_NAME_DUPLICATE);
         }
     }
 
-    @Autowired
-    private void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Autowired
-    private void setUserMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
 
     @Autowired
     private void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Autowired
+    private void setMapper(UserMapper mapper) {
+        this.mapper = mapper;
+    }
+
+    @Autowired
+    private void setRepository(UserRepository repository) {
+        this.repository = repository;
+    }
 }

@@ -10,6 +10,7 @@ import com.example.ztianmusic.exception.BizException;
 import com.example.ztianmusic.exception.ExceptionType;
 import com.example.ztianmusic.mapper.FileMapper;
 import com.example.ztianmusic.repository.FileRepository;
+import com.example.ztianmusic.service.BaseService;
 import com.example.ztianmusic.service.FileService;
 import com.example.ztianmusic.service.StorageService;
 import com.example.ztianmusic.utils.FileTypeTransformer;
@@ -28,7 +29,7 @@ import java.util.Optional;
  * @since: 2022-03-28 16:38
  */
 @Service
-public class FileServiceImpl implements FileService {
+public class FileServiceImpl extends BaseService implements FileService {
 
     private Map<String, StorageService> storageServices;
 
@@ -43,6 +44,8 @@ public class FileServiceImpl implements FileService {
         File file = mapper.createEntity(fileUploadRequest);
         file.setType(FileTypeTransformer.getFileTypeFromExt(fileUploadRequest.getExt()));
         file.setStorage(getDefaultStorage());
+        file.setCreatedBy(getCurrentUserEntity());
+        file.setUpdatedBy(getCurrentUserEntity());
         File savedFile = repository.save(file);
         // 通过接口获取STS令牌
         FileUploadDto fileUploadDto = storageServices.get(getDefaultStorage().name()).initFileUpload();
@@ -58,11 +61,14 @@ public class FileServiceImpl implements FileService {
         if (!fileOptional.isPresent()) {
             throw new BizException(ExceptionType.FILE_NOT_FOUND);
         }
-        // Todo: 只有上传者才能给更新finish；权限判断
+        File file = fileOptional.get();
+        // Todo: 是否是SUPER_ADMIN
+        if (file.getCreatedBy() != getCurrentUserEntity()) {
+            throw new BizException(ExceptionType.FILE_NOT_PERMISSION);
+        }
 
         // Todo: 验证远程文件是否存在
 
-        File file = fileOptional.get();
         file.setStatus(FileStatus.UPLOADED);
         return mapper.toDto(repository.save(file));
     }
@@ -89,5 +95,6 @@ public class FileServiceImpl implements FileService {
         this.mapper = mapper;
     }
 }
+
 
 

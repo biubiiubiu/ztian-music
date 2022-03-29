@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(CREATE_TOKEN_URL).permitAll()  // 允许请求约束
                 .antMatchers(SITE_SETTING_URL).permitAll()
+                .antMatchers("/playlists/**").permitAll()
                 .anyRequest().authenticated()   // 其它请求必须鉴权后才能请求
                 .and()
 //                .addFilter(new JwtAuthenticationFilter(authenticationManager()))    // 先用户名密码鉴权
