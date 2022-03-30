@@ -6,9 +6,10 @@ import lombok.Data;
  * description:
  *
  * @author: zhangtian
- * @since: 2022-03-30 20:00
+ * @since: 2022-03-30 20:08
  */
 @Data
-public class MusicSearchFilter extends BaseSearchFilter {
+public class ArtistSearchFilter extends BaseSearchFilter {
     private String name = "";
 }
+

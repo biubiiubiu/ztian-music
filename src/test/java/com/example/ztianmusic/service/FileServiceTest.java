@@ -24,10 +24,10 @@ class FileServiceTest extends BaseTest {
     @Test
     void initUpload() throws IOException {
         FileUploadRequest fileUploadRequest = new FileUploadRequest();
-        fileUploadRequest.setName("测试文件名");
+        fileUploadRequest.setName("TA");
         fileUploadRequest.setExt("mp3");
-        // certutil -hashfile  F:\Chrome\DownloadFiles\ztianMusic.png MD5
-        fileUploadRequest.setKey("8cdf28e57db9b4415b3e02de46221711");
+        // certutil -hashfile  G:\广播台\TA.mp3 MD5
+        fileUploadRequest.setKey("71ed659780a9f8a5e4bb9b88cbb1fe56");
         fileUploadRequest.setSize(30000L);
         FileUploadDto fileUploadDto = fileService.initUpload(fileUploadRequest);
         Assertions.assertNotNull(fileUploadDto.getSecretKey());
@@ -41,9 +41,10 @@ class FileServiceTest extends BaseTest {
     @Test
     void initUploadMaxSize() throws IOException {
         FileUploadRequest fileUploadRequest = new FileUploadRequest();
-        fileUploadRequest.setName("测试文件名");
+        fileUploadRequest.setName("TA");
         fileUploadRequest.setExt("mp3");
-        fileUploadRequest.setKey("8cdf28e57db9b4415b3e02de46221711");
+        // certutil -hashfile  G:\广播台\TA.mp3 MD5
+        fileUploadRequest.setKey("71ed659780a9f8a5e4bb9b88cbb1fe56");
         fileUploadRequest.setSize(6082813636L);
         FileUploadDto fileUploadDto = fileService.initUpload(fileUploadRequest);
         Assertions.assertNotNull(fileUploadDto.getSecretKey());
@@ -57,9 +58,10 @@ class FileServiceTest extends BaseTest {
     @WithMockUser(username = "xcsh005")
     void finishUpload() throws IOException {
         FileUploadRequest fileUploadRequest = new FileUploadRequest();
-        fileUploadRequest.setName("测试文件名");
+        fileUploadRequest.setName("TA");
         fileUploadRequest.setExt("mp3");
-        fileUploadRequest.setKey("8cdf28e57db9b4415b3e02de46221711");
+        // certutil -hashfile  G:\广播台\TA.mp3 MD5
+        fileUploadRequest.setKey("71ed659780a9f8a5e4bb9b88cbb1fe56");
         fileUploadRequest.setSize(30000L);
         FileUploadDto fileUploadDto = fileService.initUpload(fileUploadRequest);
 

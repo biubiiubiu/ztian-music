@@ -12,7 +12,7 @@ import java.util.List;
  * @since: 2022-03-30 09:35
  */
 @Data
-public class ArtistDto extends BaseDto {
+public class ArtistDto extends TraceableBaseDto {
     private String name;
 
     private String remark;

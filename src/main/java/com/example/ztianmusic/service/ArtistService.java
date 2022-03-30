@@ -1,8 +1,9 @@
 package com.example.ztianmusic.service;
 
-import com.example.ztianmusic.dto.ArtistCreateRequest;
 import com.example.ztianmusic.dto.ArtistDto;
-import com.example.ztianmusic.dto.ArtistUpdateRequest;
+import com.example.ztianmusic.dto.ArtistSearchFilter;
+import com.example.ztianmusic.entity.Artist;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -12,10 +13,9 @@ import java.util.List;
  * @author: zhangtian
  * @since: 2022-03-30 09:38
  */
-public interface ArtistService {
-    ArtistDto create(ArtistCreateRequest artistCreateRequest);
-
-    ArtistDto update(String id, ArtistUpdateRequest artistUpdateRequest);
-
+public interface ArtistService extends GeneralService<Artist, ArtistDto> {
     List<ArtistDto> list();
+
+    Page<ArtistDto> search(ArtistSearchFilter artistSearchFilter);
 }
+

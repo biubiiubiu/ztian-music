@@ -1,4 +1,4 @@
-package com.example.ztianmusic.service;
+package com.example.ztianmusic.service.impl;
 
 import com.example.ztianmusic.entity.User;
 import com.example.ztianmusic.exception.BizException;

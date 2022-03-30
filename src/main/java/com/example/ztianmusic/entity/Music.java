@@ -3,10 +3,8 @@ package com.example.ztianmusic.entity;
 import com.example.ztianmusic.enums.MusicStatus;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * description: 音乐实体类
@@ -21,6 +19,10 @@ public class Music extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private MusicStatus status;
+
+    @ManyToMany
+    @JoinTable(name = "artist_music", joinColumns = @JoinColumn(name = "music_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"))
+    private List<Artist> artistList;
 
     private String description;
 

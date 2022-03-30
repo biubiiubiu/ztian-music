@@ -10,7 +10,6 @@ import com.example.ztianmusic.exception.BizException;
 import com.example.ztianmusic.exception.ExceptionType;
 import com.example.ztianmusic.mapper.FileMapper;
 import com.example.ztianmusic.repository.FileRepository;
-import com.example.ztianmusic.service.BaseService;
 import com.example.ztianmusic.service.FileService;
 import com.example.ztianmusic.service.StorageService;
 import com.example.ztianmusic.utils.FileTypeTransformer;
@@ -58,11 +57,7 @@ public class FileServiceImpl extends BaseService implements FileService {
 
     @Override
     public FileDto finishUpload(String id) {
-        Optional<File> fileOptional = repository.findById(id);
-        if (!fileOptional.isPresent()) {
-            throw new BizException(ExceptionType.FILE_NOT_FOUND);
-        }
-        File file = fileOptional.get();
+        File file = getFileEntity(id);
         // Todo: 是否是SUPER_ADMIN
         if (!Objects.equals(file.getCreatedBy().getId(), getCurrentUserEntity().getId())) {
             throw new BizException(ExceptionType.FILE_NOT_PERMISSION);
@@ -78,6 +73,14 @@ public class FileServiceImpl extends BaseService implements FileService {
     @Override
     public Storage getDefaultStorage() {
         return Storage.COS;
+    }
+
+    public File getFileEntity(String id) {
+        Optional<File> fileOptional = repository.findById(id);
+        if (!fileOptional.isPresent()) {
+            throw new BizException(ExceptionType.FILE_NOT_FOUND);
+        }
+        return fileOptional.get();
     }
 
 

@@ -1,11 +1,14 @@
 package com.example.ztianmusic.controller;
 
 import com.example.ztianmusic.dto.ArtistCreateRequest;
+import com.example.ztianmusic.dto.ArtistSearchFilter;
 import com.example.ztianmusic.dto.ArtistUpdateRequest;
 import com.example.ztianmusic.mapper.ArtistMapper;
 import com.example.ztianmusic.service.ArtistService;
 import com.example.ztianmusic.vo.ArtistVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,17 +31,26 @@ public class ArtistController {
 
     @PostMapping
     public ArtistVo create(@Validated @RequestBody ArtistCreateRequest artistCreateRequest) {
-        return artistMapper.toVo(artistService.create(artistCreateRequest));
+        return artistMapper.toVo(artistService.create(artistMapper.toDto(artistCreateRequest)));
     }
 
     @PostMapping("/{id}")
     public ArtistVo update(@PathVariable String id, @Validated @RequestBody ArtistUpdateRequest artistUpdateRequest) {
-        return artistMapper.toVo(artistService.update(id, artistUpdateRequest));
+        return artistMapper.toVo(artistService.update(id, artistMapper.toDto(artistUpdateRequest)));
     }
 
     @GetMapping
     public List<ArtistVo> list() {
         return artistService.list().stream().map(artistMapper::toVo).collect(Collectors.toList());
+    }
+
+    @PostMapping("/search")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Page<ArtistVo> search(@Validated @RequestBody(required = false) ArtistSearchFilter filter) {
+        if (filter == null) {
+            filter = new ArtistSearchFilter();
+        }
+        return artistService.search(filter).map(artistMapper::toVo);
     }
 
     @Autowired

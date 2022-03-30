@@ -1,22 +1,26 @@
 package com.example.ztianmusic.service.impl;
 
-import com.example.ztianmusic.dto.ArtistCreateRequest;
 import com.example.ztianmusic.dto.ArtistDto;
-import com.example.ztianmusic.dto.ArtistUpdateRequest;
+import com.example.ztianmusic.dto.ArtistSearchFilter;
 import com.example.ztianmusic.entity.Artist;
-import com.example.ztianmusic.enums.ArtistStatus;
-import com.example.ztianmusic.exception.BizException;
 import com.example.ztianmusic.exception.ExceptionType;
 import com.example.ztianmusic.mapper.ArtistMapper;
+import com.example.ztianmusic.mapper.MapperInterface;
 import com.example.ztianmusic.repository.ArtistRepository;
+import com.example.ztianmusic.repository.specs.ArtistSpecification;
+import com.example.ztianmusic.repository.specs.SearchCriteria;
+import com.example.ztianmusic.repository.specs.SearchOperation;
 import com.example.ztianmusic.service.ArtistService;
-import com.example.ztianmusic.service.BaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -27,35 +31,25 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class ArtistServiceImpl extends BaseService implements ArtistService {
+public class ArtistServiceImpl extends TraceableGeneralServiceImpl<Artist, ArtistDto> implements ArtistService {
 
     private ArtistMapper mapper;
 
     private ArtistRepository repository;
 
     @Override
-    public ArtistDto create(ArtistCreateRequest artistCreateRequest) {
-        Artist artist = mapper.createEntity(artistCreateRequest);
-        artist.setStatus(ArtistStatus.DRAFT);
-        artist.setCreatedBy(getCurrentUserEntity());
-        artist.setUpdatedBy(getCurrentUserEntity());
-        return mapper.toDto(repository.save(artist));
-    }
-
-    @Override
-    public ArtistDto update(String id, ArtistUpdateRequest artistUpdateRequest) {
-        Optional<Artist> artistOptional = repository.findById(id);
-        if (!artistOptional.isPresent()) {
-            throw new BizException(ExceptionType.ARTIST_NOT_FOUND);
-        }
-        Artist artist = mapper.updateEntity(artistOptional.get(), artistUpdateRequest);
-
-        return mapper.toDto(repository.save(artist));
-    }
-
-    @Override
     public List<ArtistDto> list() {
         return repository.findAll().stream().map(mapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<ArtistDto> search(ArtistSearchFilter artistSearchFilter) {
+        ArtistSpecification specs = new ArtistSpecification();
+        // Todo: 代码重复需要重构
+        specs.add(new SearchCriteria("name", artistSearchFilter.getName(), SearchOperation.MATCH));
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(artistSearchFilter.getPage() - 1, artistSearchFilter.getSize(), sort);
+        return repository.findAll(specs, pageable).map(mapper::toDto);
     }
 
     @Autowired
@@ -67,4 +61,22 @@ public class ArtistServiceImpl extends BaseService implements ArtistService {
     public void setMapper(ArtistMapper mapper) {
         this.mapper = mapper;
     }
+
+
+    @Override
+    public JpaRepository<Artist, String> getRepository() {
+        return repository;
+    }
+
+    @Override
+    public MapperInterface<Artist, ArtistDto> getMapper() {
+        return mapper;
+    }
+
+    @Override
+    public ExceptionType getNotFoundExceptionType() {
+        return ExceptionType.ARTIST_NOT_FOUND;
+    }
 }
+
+

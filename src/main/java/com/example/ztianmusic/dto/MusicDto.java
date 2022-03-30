@@ -4,6 +4,8 @@ import com.example.ztianmusic.enums.MusicStatus;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
  * description: music dto
  *
@@ -20,4 +22,6 @@ public class MusicDto extends BaseDto {
     private String description;
 
     private FileDto file;
+
+    private List<ArtistDto> artistList;
 }
