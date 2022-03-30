@@ -4,6 +4,7 @@ import com.example.ztianmusic.dto.FileDto;
 import com.example.ztianmusic.dto.FileUploadRequest;
 import com.example.ztianmusic.entity.File;
 import com.example.ztianmusic.vo.FileVo;
+import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 
 /**
@@ -13,6 +14,7 @@ import org.mapstruct.Mapper;
  * @since: 2022-03-28 16:34
  */
 @Mapper(componentModel = "spring")
+@DecoratedWith(FileMapperDecorator.class)
 public interface FileMapper {
     File createEntity(FileUploadRequest fileUploadRequest);
 

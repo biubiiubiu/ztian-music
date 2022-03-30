@@ -14,7 +14,7 @@ import org.mapstruct.MappingTarget;
  * @author: zhangtian
  * @since: 2022-03-28 16:17
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = FileMapper.class)
 public interface MusicMapper {
     MusicDto toDto(Music music);
 
