@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import java.util.Map;
 
 /**
- * description:
+ * description:文件uri转换器
  *
  * @author: zhangtian
  * @since: 2022-03-30 08:48
@@ -30,6 +30,11 @@ public abstract class FileMapperDecorator implements FileMapper {
         if (fileDto == null) {
             return null;
         }
+        // Todo: 待修复
+        if (fileDto.getStorage() == null) {
+            return null;
+        }
+
 
         fileDto.setUri(storageServices.get(fileDto.getStorage().name()).getFileUri(fileDto.getKey()));
         return fileDto;

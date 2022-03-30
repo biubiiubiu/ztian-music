@@ -14,11 +14,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @Slf4j
-class FileServiceTest extends BaseService {
+class FileServiceTest extends BaseTest {
 
     private FileService fileService;
 
