@@ -31,7 +31,6 @@ public class UserDto {
 
     private String openId;
 
-
     private String lastLoginIp;
 
     private Date lastLoginTime;
