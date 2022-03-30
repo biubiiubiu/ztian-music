@@ -2,8 +2,7 @@ package com.example.ztianmusic.dto;
 
 import com.example.ztianmusic.enums.MusicStatus;
 import lombok.Data;
-
-import java.util.Date;
+import lombok.ToString;
 
 /**
  * description: music dto
@@ -12,18 +11,13 @@ import java.util.Date;
  * @since: 2022-03-28 16:21
  */
 @Data
-public class MusicDto {
-    private String id;
-
+@ToString(callSuper = true)
+public class MusicDto extends BaseDto {
     private String name;
 
-    private MusicStatus status;
+    private MusicStatus status = MusicStatus.DRAFT;
 
     private String description;
 
     private FileDto file;
-
-    private Date createdTime;
-
-    private Date updatedTime;
 }
