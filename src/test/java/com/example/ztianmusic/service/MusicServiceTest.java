@@ -42,7 +42,7 @@ class MusicServiceTest extends BaseTest {
     List<String> artistIds = new ArrayList<>();
 
     @Test
-    @WithMockUser(username = "yili")
+    @WithMockUser(username = "ztian")
     void create() {
         MusicCreateRequest musicCreateRequest = new MusicCreateRequest();
         musicCreateRequest.setName("TA");

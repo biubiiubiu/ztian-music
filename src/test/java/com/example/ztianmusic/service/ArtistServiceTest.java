@@ -29,7 +29,7 @@ class ArtistServiceTest extends BaseTest {
 
 
     @Test
-    @WithMockUser(username = "yili")
+    @WithMockUser(username = "ztian")
     void create() {
         ArtistCreateRequest artistCreateRequest = new ArtistCreateRequest();
         artistCreateRequest.setName("不是花火呀");
