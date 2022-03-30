@@ -37,11 +37,6 @@ public class MusicServiceImpl extends GeneralServiceImpl<Music, MusicDto> implem
     private MusicMapper mapper;
 
     @Override
-    public MusicDto create(MusicDto musicDto) {
-        return super.create(musicDto);
-    }
-
-    @Override
     public void publish(String id) {
         Music music = getEntity(id);
         music.setStatus(MusicStatus.PUBLISHED);

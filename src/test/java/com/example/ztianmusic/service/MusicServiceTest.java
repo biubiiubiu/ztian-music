@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,7 @@ class MusicServiceTest extends BaseTest {
 
     String fileId;
 
-    List<String> artistIds;
+    List<String> artistIds = new ArrayList<>();
 
     @Test
     @WithMockUser(username = "yili")
