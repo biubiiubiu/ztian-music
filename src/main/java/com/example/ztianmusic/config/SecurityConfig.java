@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // 变量名
     public static final String HEADER_STRING = "Authorization";
     // 鉴权注册入口
-    public static final String CREATE_TOKEN_URL = "/tokens";
+    public static final String CREATE_TOKEN_URL = "/tokens/**";
     public static final String SITE_SETTING_URL = "/settings/site";
 
     UserService userService;
