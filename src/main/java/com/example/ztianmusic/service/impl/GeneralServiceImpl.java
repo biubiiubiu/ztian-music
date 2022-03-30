@@ -4,8 +4,6 @@ import com.example.ztianmusic.dto.BaseDto;
 import com.example.ztianmusic.entity.BaseEntity;
 import com.example.ztianmusic.exception.BizException;
 import com.example.ztianmusic.service.GeneralService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -50,10 +48,5 @@ public abstract class GeneralServiceImpl<Entity extends BaseEntity, Dto extends 
     public void delete(String id) {
         Entity existedEntity = getEntity(id);
         getRepository().delete(existedEntity);
-    }
-
-    @Override
-    public Page<Dto> search(Dto searchDto, Pageable pageable) {
-        return null;
     }
 }
