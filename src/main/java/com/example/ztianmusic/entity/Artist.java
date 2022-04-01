@@ -27,5 +27,6 @@ public class Artist extends TraceableBaseEntity {
     @JoinTable(name = "artist_music", joinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "music_id", referencedColumnName = "id"))
     private List<Music> musicList;
 
+    // todo 这里数据库not null，但是没有地方初始化
     private ArtistStatus status;
 }
