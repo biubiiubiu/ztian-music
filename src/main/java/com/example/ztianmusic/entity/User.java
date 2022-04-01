@@ -40,8 +40,6 @@ public class User extends BaseEntity implements UserDetails {
 
     private Boolean enabled = true;
 
-    private String openId;
-
     private String lastLoginIp;
 
     private Date lastLoginTime;

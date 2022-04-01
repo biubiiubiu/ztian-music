@@ -17,5 +17,10 @@ public interface ArtistService extends GeneralService<Artist, ArtistDto> {
     List<ArtistDto> list();
 
     Page<ArtistDto> search(ArtistSearchFilter artistSearchFilter);
+
+    ArtistDto recommend(String id, Integer recommendFactor);
+
+    ArtistDto cancelRecommendation(String id);
 }
+
 

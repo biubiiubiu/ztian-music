@@ -21,11 +21,6 @@ public class TokenController {
         return userService.createToken(tokenCreateRequest);
     }
 
-    @PostMapping("/mp")
-    public String createByMp(@RequestHeader(name = "X-WX-OPENID") String openId) {
-        return userService.createTokenByOpenId(openId);
-    }
-
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;

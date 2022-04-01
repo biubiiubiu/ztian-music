@@ -13,8 +13,7 @@ import java.util.List;
  * @since: 2022-03-29 20:47
  */
 @Data
-public class PlaylistDto {
-    private String id;
+public class PlaylistDto extends TraceableBaseDto {
 
     private String name;
 
@@ -24,11 +23,11 @@ public class PlaylistDto {
 
     private PlayListStatus status;
 
-    private UserDto creator;
-
     private List<MusicDto> musicList;
 
-    private Date createdTime;
+    private Boolean recommended;
 
-    private Date updatedTime;
+    private Integer recommendFactor;
+
+    private Boolean special;
 }

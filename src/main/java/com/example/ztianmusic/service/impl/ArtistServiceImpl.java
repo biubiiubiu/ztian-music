@@ -45,11 +45,27 @@ public class ArtistServiceImpl extends TraceableGeneralServiceImpl<Artist, Artis
     @Override
     public Page<ArtistDto> search(ArtistSearchFilter artistSearchFilter) {
         ArtistSpecification specs = new ArtistSpecification();
-        // Todo: 代码重复需要重构
         specs.add(new SearchCriteria("name", artistSearchFilter.getName(), SearchOperation.MATCH));
-        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
-        Pageable pageable = PageRequest.of(artistSearchFilter.getPage() - 1, artistSearchFilter.getSize(), sort);
-        return repository.findAll(specs, pageable).map(mapper::toDto);
+        if (artistSearchFilter.getRecommended() != null) {
+            specs.add(new SearchCriteria("recommended", artistSearchFilter.getRecommended(), SearchOperation.EQUAL));
+        }
+        return repository.findAll(specs, artistSearchFilter.toPageable()).map(mapper::toDto);
+    }
+
+    @Override
+    public ArtistDto recommend(String id, Integer recommendFactor) {
+        Artist artist = getEntity(id);
+        artist.setRecommended(true);
+        artist.setRecommendFactor(recommendFactor);
+        return mapper.toDto(repository.save(artist));
+    }
+
+    @Override
+    public ArtistDto cancelRecommendation(String id) {
+        Artist artist = getEntity(id);
+        artist.setRecommended(false);
+        artist.setRecommendFactor(0);
+        return mapper.toDto(repository.save(artist));
     }
 
     @Autowired

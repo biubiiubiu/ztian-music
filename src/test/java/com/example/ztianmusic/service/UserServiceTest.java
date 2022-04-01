@@ -24,18 +24,12 @@ class UserServiceTest extends BaseTest {
     @Test
     void getPassword() {
         String password = "123456";
+        // 这个每天都不一样
         System.out.println(passwordEncoder.encode(password));
     }
 
     @Autowired
     private void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @Test
-    void createTokenByMp() {
-        String token = userService.createTokenByOpenId("ztian-openid");
-        Assertions.assertNotNull(token);
-        log.info(token);
     }
 }

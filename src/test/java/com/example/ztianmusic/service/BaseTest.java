@@ -28,7 +28,6 @@ public abstract class BaseTest {
         UserDto userDto = userService.create(userCreateRequest);
 
         User user = userService.loadUserByUsername(userDto.getUsername());
-        user.setOpenId("ztian-openid");
         userRepository.save(user);
     }
 }

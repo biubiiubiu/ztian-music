@@ -127,24 +127,4 @@ public class UserServiceImpl extends BaseService implements UserService {
     private void setRepository(UserRepository repository) {
         this.repository = repository;
     }
-
-    @Override
-    public String createTokenByOpenId(String openId) {
-        User user = repository.getByOpenId(openId);
-        if (user == null) {
-            throw new BizException(ExceptionType.USER_OPEN_ID_NOT_FOUND);
-        }
-
-        if (!user.isEnabled()) {
-            throw new BizException(ExceptionType.USER_NOT_ENABLED);
-        }
-
-        if (!user.isAccountNonLocked()) {
-            throw new BizException(ExceptionType.USER_LOCKED);
-        }
-        return JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConfig.EXPIRATION_TIME))
-                .sign(Algorithm.HMAC512(SecurityConfig.SECRET.getBytes()));
-    }
 }

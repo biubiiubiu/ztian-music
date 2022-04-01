@@ -14,7 +14,6 @@ import java.util.List;
  */
 @Data
 public class PlaylistVo extends BaseVo {
-    private String id;
 
     private String name;
 
@@ -24,12 +23,13 @@ public class PlaylistVo extends BaseVo {
 
     private PlayListStatus status;
 
-    private UserVo creator;
-
     private List<MusicVo> musicList;
 
-    private Date createdTime;
+    private Boolean recommended;
 
-    private Date updatedTime;
+    private Integer recommendFactor;
+
+    private Boolean special;
 }
+
 

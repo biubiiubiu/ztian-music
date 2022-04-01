@@ -6,6 +6,7 @@ import com.example.ztianmusic.dto.ArtistUpdateRequest;
 import com.example.ztianmusic.entity.Artist;
 import com.example.ztianmusic.vo.ArtistVo;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * description:
@@ -15,6 +16,8 @@ import org.mapstruct.Mapper;
  */
 @Mapper(componentModel = "spring", uses = {FileMapper.class, MusicMapper.class})
 public interface ArtistMapper extends MapperInterface<Artist, ArtistDto> {
+
+    @Mapping(source = "photoId", target = "photo.id")
     ArtistDto toDto(ArtistCreateRequest artistCreateRequest);
 
     ArtistDto toDto(ArtistUpdateRequest artistUpdateRequest);
