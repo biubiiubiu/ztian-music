@@ -2,20 +2,26 @@ package com.example.ztianmusic.service.impl;
 
 import com.example.ztianmusic.dto.MusicCreateRequest;
 import com.example.ztianmusic.dto.MusicDto;
+import com.example.ztianmusic.dto.MusicSearchFilter;
 import com.example.ztianmusic.dto.MusicUpdateRequest;
 import com.example.ztianmusic.entity.Music;
 import com.example.ztianmusic.enums.MusicStatus;
 import com.example.ztianmusic.exception.BizException;
 import com.example.ztianmusic.exception.ExceptionType;
+import com.example.ztianmusic.mapper.MapperInterface;
 import com.example.ztianmusic.mapper.MusicMapper;
 import com.example.ztianmusic.repository.MusicRepository;
+import com.example.ztianmusic.repository.specs.MusicSpecification;
+import com.example.ztianmusic.repository.specs.SearchCriteria;
+import com.example.ztianmusic.repository.specs.SearchOperation;
 import com.example.ztianmusic.service.MusicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * description: musicservice 实现类
@@ -24,42 +30,15 @@ import java.util.stream.Collectors;
  * @since: 2022-03-28 16:16
  */
 @Service
-public class MusicServiceImpl implements MusicService {
+public class MusicServiceImpl extends GeneralServiceImpl<Music, MusicDto> implements MusicService {
 
     private MusicRepository repository;
 
     private MusicMapper mapper;
 
     @Override
-    public MusicDto create(MusicCreateRequest musicCreateRequest) {
-        Music music = mapper.createEntity(musicCreateRequest);
-        music.setStatus(MusicStatus.DRAFT);
-        return mapper.toDto(repository.save(music));
-    }
-
-    @Override
-    public MusicDto update(String id, MusicUpdateRequest musicUpdateRequest) {
-        Music existMusic = getMusic(id);
-        Music music = mapper.updateEntity(existMusic, musicUpdateRequest);
-        return mapper.toDto(repository.save(music));
-    }
-
-    private Music getMusic(String id) {
-        Optional<Music> musicOptional = repository.findById(id);
-        if (!musicOptional.isPresent()) {
-            throw new BizException(ExceptionType.MUSIC_NOT_FOUND);
-        }
-        return musicOptional.get();
-    }
-
-    @Override
-    public List<MusicDto> list() {
-        return repository.findAll().stream().map(mapper::toDto).collect(Collectors.toList());
-    }
-
-    @Override
     public void publish(String id) {
-        Music music = getMusic(id);
+        Music music = getEntity(id);
         music.setStatus(MusicStatus.PUBLISHED);
         repository.save(music);
     }
@@ -67,11 +46,10 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public void close(String id) {
-        Music music = getMusic(id);
+        Music music = getEntity(id);
         music.setStatus(MusicStatus.CLOSED);
         repository.save(music);
     }
-
 
     @Autowired
     public void setRepository(MusicRepository repository) {
@@ -81,5 +59,32 @@ public class MusicServiceImpl implements MusicService {
     @Autowired
     public void setMapper(MusicMapper mapper) {
         this.mapper = mapper;
+    }
+
+    @Override
+    public JpaRepository<Music, String> getRepository() {
+        return repository;
+    }
+
+    @Override
+    public MapperInterface<Music, MusicDto> getMapper() {
+        return mapper;
+    }
+
+    @Override
+    public ExceptionType getNotFoundExceptionType() {
+        return ExceptionType.MUSIC_NOT_FOUND;
+    }
+
+    @Override
+    public Page<MusicDto> search(MusicSearchFilter musicSearchRequest) {
+        if (musicSearchRequest == null) {
+            musicSearchRequest = new MusicSearchFilter();
+        }
+        MusicSpecification specs = new MusicSpecification();
+        specs.add(new SearchCriteria("name", musicSearchRequest.getName(), SearchOperation.MATCH));
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(musicSearchRequest.getPage() - 1, musicSearchRequest.getSize(), sort);
+        return repository.findAll(specs, pageable).map(mapper::toDto);
     }
 }

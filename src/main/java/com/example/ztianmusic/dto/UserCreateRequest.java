@@ -1,4 +1,5 @@
 package com.example.ztianmusic.dto;
+import com.example.ztianmusic.enums.Gender;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -25,5 +26,5 @@ public class UserCreateRequest {
 
     private String nickname;
 
-    private String gender;
+    private Gender gender;
 }
