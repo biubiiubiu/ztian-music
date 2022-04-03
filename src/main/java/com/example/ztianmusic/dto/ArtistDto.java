@@ -21,9 +21,13 @@ public class ArtistDto extends TraceableBaseDto {
 
     private List<MusicDto> musicDtoList;
 
-    private ArtistStatus status;
+    private ArtistStatus status = ArtistStatus.DRAFT;
 
-    private Boolean recommended;
+    private Boolean recommended = false;
 
-    private Integer recommendFactor;
+    private Integer recommendFactor = 0;
+
+    private String createdByUserId;
+
+    private String updatedByUserId;
 }

@@ -20,4 +20,9 @@ public class ArtistCreateRequest {
 
     @NotBlank(message = "歌手照片必须上传")
     private String photoId;
+
+    private String createdByUserId;
+
+    private String updatedByUserId;
+
 }

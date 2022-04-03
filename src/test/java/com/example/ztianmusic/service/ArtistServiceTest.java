@@ -1,6 +1,7 @@
 package com.example.ztianmusic.service;
 
 import com.example.ztianmusic.dto.*;
+import com.example.ztianmusic.entity.User;
 import com.example.ztianmusic.mapper.ArtistMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
@@ -34,7 +35,12 @@ class ArtistServiceTest extends BaseTest {
         ArtistCreateRequest artistCreateRequest = new ArtistCreateRequest();
         artistCreateRequest.setName("不是花火呀");
         artistCreateRequest.setRemark("不是花火呀");
-        ArtistDto artistDto = artistService.create(artistMapper.toDto(artistCreateRequest));
+        artistCreateRequest.setPhotoId("27I3h6Mm0Tl5HBKyEOIH3EycS3o");  // 测试图片
+        UserDto user = userService.getCurrentUser();
+        artistCreateRequest.setCreatedByUserId(user.getId());
+        artistCreateRequest.setUpdatedByUserId(user.getId());
+        ArtistDto artistDto1 = artistMapper.toDto(artistCreateRequest);
+        ArtistDto artistDto = artistService.create(artistDto1);
         Assertions.assertEquals(artistCreateRequest.getName(), artistDto.getName());
         log.info(artistDto.toString());
     }

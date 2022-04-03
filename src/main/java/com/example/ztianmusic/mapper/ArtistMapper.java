@@ -16,6 +16,7 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = {FileMapper.class, MusicMapper.class})
 public interface ArtistMapper extends MapperInterface<Artist, ArtistDto> {
+    Artist createEntity(ArtistCreateRequest artistCreateRequest);
 
     @Mapping(source = "photoId", target = "photo.id")
     ArtistDto toDto(ArtistCreateRequest artistCreateRequest);

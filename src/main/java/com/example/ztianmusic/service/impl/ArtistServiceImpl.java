@@ -1,5 +1,6 @@
 package com.example.ztianmusic.service.impl;
 
+import com.example.ztianmusic.dto.ArtistCreateRequest;
 import com.example.ztianmusic.dto.ArtistDto;
 import com.example.ztianmusic.dto.ArtistSearchFilter;
 import com.example.ztianmusic.entity.Artist;
@@ -36,6 +37,12 @@ public class ArtistServiceImpl extends TraceableGeneralServiceImpl<Artist, Artis
     private ArtistMapper mapper;
 
     private ArtistRepository repository;
+
+    @Override
+    public ArtistDto create(ArtistCreateRequest artistCreateRequest) {
+        Artist artist = mapper.createEntity(artistCreateRequest);
+        return mapper.toDto(repository.save(artist));
+    }
 
     @Override
     public List<ArtistDto> list() {
