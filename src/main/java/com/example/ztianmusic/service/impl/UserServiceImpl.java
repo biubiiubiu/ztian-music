@@ -52,6 +52,15 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
+    public UserDto getByUsername(String username) {
+        Optional<User> user = repository.findByUsername(username);
+        if (!user.isPresent()) {
+            throw new BizException(ExceptionType.USER_NOT_FOUND);
+        }
+        return mapper.toDto(user.get());
+    }
+
+    @Override
     public UserDto update(String id, UserUpdateRequest userUpdateRequest) {
         return mapper.toDto(repository.save(mapper.updateEntity(getById(id), userUpdateRequest)));
     }

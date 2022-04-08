@@ -47,6 +47,11 @@ public class UserController {
         return userMapper.toVo(userService.get(id));
     }
 
+    @GetMapping("/{username}")
+    UserVo getByUsername(@PathVariable String username) {
+        return userMapper.toVo(userService.getByUsername(username));
+    }
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     UserVo update(@PathVariable String id,
